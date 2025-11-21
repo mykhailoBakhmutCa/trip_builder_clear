@@ -20,8 +20,7 @@ cd trip_builder_clear
 ### 2. Create your `.env` file
 
 ```bash
-cp .env.example .env
-cp .env.example.docker .env
+cat .env.example .env.example.docker > .env
 ```
 
 Edit `.env` and provide your configuration values, for example:
