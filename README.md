@@ -13,8 +13,8 @@
 ### 1. Clone the project
 
 ```bash
-git clone <REPOSITORY_URL>
-cd <project_name>
+git clone https://github.com/mykhailoBakhmutCa/trip_builder_clear
+cd trip_builder_clear
 ```
 
 ### 2. Create your `.env` file
