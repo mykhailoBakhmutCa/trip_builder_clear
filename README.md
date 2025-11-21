@@ -21,6 +21,7 @@ cd trip_builder_clear
 
 ```bash
 cp .env.example .env
+cp .env.example.docker .env
 ```
 
 Edit `.env` and provide your configuration values, for example:
