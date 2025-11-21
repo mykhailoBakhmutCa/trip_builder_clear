@@ -108,3 +108,31 @@ make bash
 
 * `DB_HOST` in `.env` must match the MySQL service name in docker-compose (`mysql` in this project).
 * `make init` safely waits for the database to be ready before running migrations.
+
+---
+
+## 6. Running Tests
+
+All tests should be run inside the PHP container to ensure the correct environment and dependencies.
+
+### Enter PHP container shell
+
+```bash
+make bash
+```
+
+### Inside the container, run Laravel tests
+
+```bash
+php artisan test
+```
+
+### Or run directly from host without entering container
+
+```bash
+docker compose exec php php artisan test
+```
+
+Tests will use the database specified in your `.env`.
+
+For isolated test database, consider creating a `.env.testing` file with a separate database configuration.
