@@ -1,59 +1,103 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Project with Docker
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Requirements
 
-## About Laravel
+* Docker & Docker Compose
+* Git
+* PHP and Composer (optional, if running only via Docker)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Quick Start
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Clone the project
 
-## Learning Laravel
+```bash
+git clone <REPOSITORY_URL>
+cd <project_name>
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 2. Create your `.env` file
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+cp .env.example .env
+```
 
-## Laravel Sponsors
+Edit `.env` and provide your configuration values, for example:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```env
+APP_NAME=MyProject
+APP_ENV=local
+APP_KEY=
 
-### Premium Partners
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=my_database
+DB_USERNAME=my_user
+DB_PASSWORD=my_password
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+⚠️ Never store real passwords in `.env.example`.
+Use `.env` for private credentials.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Environment Variables Overview
 
-## Code of Conduct
+### `.env.example`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```env
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=laravel
+DB_PASSWORD=secret
+```
 
-## Security Vulnerabilities
+### `.env.example.docker`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```env
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=laravel
+MYSQL_USER=laravel
+MYSQL_PASSWORD=secret
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 3. Initialize the project with Docker + Makefile
+
+```bash
+make init
+```
+
+This command will:
+
+* Start containers (`docker compose up -d`)
+* Build containers (`docker compose build`)
+* Install dependencies & generate app key (`composer install`, `php artisan key:generate`)
+* Run migrations and seed the database (`php artisan migrate --seed`)
+
+---
+
+## Useful Makefile Commands
+
+| Command        | Description                               |
+| -------------- | ----------------------------------------- |
+| `make up`      | Start containers in detached mode         |
+| `make down`    | Stop all containers                       |
+| `make build`   | Rebuild containers                        |
+| `make install` | Install dependencies and generate app key |
+| `make migrate` | Run database migrations and seeders       |
+| `make init`    | Full project setup from scratch           |
+| `make bash`    | Open a shell inside the PHP container     |
+
+---
+
+## 4. Enter the PHP container shell
+
+```bash
+make bash
+```
