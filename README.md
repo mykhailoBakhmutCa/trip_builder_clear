@@ -28,7 +28,6 @@ Edit `.env` and provide your configuration values, for example:
 ```env
 APP_NAME=MyProject
 APP_ENV=local
-APP_KEY=
 
 DB_CONNECTION=mysql
 DB_HOST=db
