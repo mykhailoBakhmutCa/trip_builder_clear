@@ -2,7 +2,7 @@ init: build up install migrate seed
 
 wait-db:
 	@echo "Waiting for database to be ready..."
-	@until docker compose exec php php artisan migrate:status >/dev/null 2>&1; do \
+	@until docker compose exec laravel-mysql sh -c 'mysqladmin ping -h localhost -u"$${MYSQL_USER}" -p"$${MYSQL_PASSWORD}" >/dev/null 2>&1'; do \
 		echo "Database not ready, retrying in 2s..."; \
 		sleep 2; \
 	done
@@ -18,14 +18,14 @@ build:
 	docker compose build
 
 install: up
-	docker compose exec php composer install
-	docker compose exec php php artisan key:generate
+	docker compose exec laravel-php composer install
+	docker compose exec laravel-php php artisan key:generate
 
 migrate: wait-db
-	docker compose exec php php artisan migrate
+	docker compose exec laravel-php php artisan migrate
 
 seed: wait-db
-	docker compose exec php php artisan db:seed
+	docker compose exec laravel-php php artisan db:seed
 
 bash:
-	docker compose exec php bash
+	docker compose exec laravel-php bash
