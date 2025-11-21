@@ -30,15 +30,14 @@ APP_NAME=MyProject
 APP_ENV=local
 
 DB_CONNECTION=mysql
-DB_HOST=db
+DB_HOST=mysql       # must match the MySQL service name in docker-compose.yml
 DB_PORT=3306
 DB_DATABASE=my_database
 DB_USERNAME=my_user
 DB_PASSWORD=my_password
 ```
 
-⚠️ Never store real passwords in `.env.example`.
-Use `.env` for private credentials.
+⚠️ Never store real passwords in `.env.example`. Use `.env` for private credentials.
 
 ---
 
@@ -46,7 +45,7 @@ Use `.env` for private credentials.
 
 ### `.env.example`
 
-```env
+```
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
@@ -57,7 +56,7 @@ DB_PASSWORD=secret
 
 ### `.env.example.docker`
 
-```env
+```
 MYSQL_ROOT_PASSWORD=root
 MYSQL_DATABASE=laravel
 MYSQL_USER=laravel
@@ -74,24 +73,26 @@ make init
 
 This command will:
 
-* Start containers (`docker compose up -d`)
-* Build containers (`docker compose build`)
-* Install dependencies & generate app key (`composer install`, `php artisan key:generate`)
-* Run migrations and seed the database (`php artisan migrate --seed`)
+* Build and start containers (`docker compose build && docker compose up -d`)
+* Install PHP dependencies and generate app key (`composer install` & `php artisan key:generate`)
+* Run migrations (`make migrate`) and seed the database (`make seed`)
+
+> Note: Migrations and seeders are now separate commands for more control.
 
 ---
 
 ## Useful Makefile Commands
 
-| Command        | Description                               |
-| -------------- | ----------------------------------------- |
-| `make up`      | Start containers in detached mode         |
-| `make down`    | Stop all containers                       |
-| `make build`   | Rebuild containers                        |
-| `make install` | Install dependencies and generate app key |
-| `make migrate` | Run database migrations and seeders       |
-| `make init`    | Full project setup from scratch           |
-| `make bash`    | Open a shell inside the PHP container     |
+| Command        | Description                                                         |
+| -------------- | ------------------------------------------------------------------- |
+| `make up`      | Start containers in detached mode                                   |
+| `make down`    | Stop all containers and remove volumes                              |
+| `make build`   | Rebuild containers                                                  |
+| `make install` | Install dependencies and generate app key                           |
+| `make migrate` | Run database migrations (without seeders)                           |
+| `make seed`    | Seed the database                                                   |
+| `make init`    | Full project setup from scratch (build, up, install, migrate, seed) |
+| `make bash`    | Open a shell inside the PHP container                               |
 
 ---
 
@@ -100,3 +101,10 @@ This command will:
 ```bash
 make bash
 ```
+
+---
+
+## 5. Notes
+
+* `DB_HOST` in `.env` must match the MySQL service name in docker-compose (`mysql` in this project).
+* `make init` safely waits for the database to be ready before running migrations.
